@@ -1,0 +1,25 @@
+{
+  "${ModID}:Config": {
+    "TEXT_DICT": {
+      "AlwaysChallenge": "Challenges spawn every combat.",
+      "GiveCard": "Spawn standard card reward when challenges spawn.",
+      "PlayerTips": "Show Opt-In Challenge descriptions when hovering the player."
+    }
+  },
+  "${ModID}:PruneButton": {
+    "TEXT": [
+      "Replace",
+      "Remove this card from this and future card rewards and replace it with a different one."
+    ]
+  },
+  "${ModID}:PruneCounter": {
+    "TEXT": [
+      "Replace Charges",
+      "Replacing a card in card reward screens costs 1 charge. NL Gain more charges by slaying elites and bosses! NL Click outside of combat to see pruned cards."
+    ],
+    "TEXT_DICT": {
+      "PruneScreen": "These cards have been pruned from the pool",
+      "cancel": "Return"
+    }
+  }
+}
