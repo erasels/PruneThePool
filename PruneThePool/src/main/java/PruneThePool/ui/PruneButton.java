@@ -27,7 +27,7 @@ public class PruneButton extends LabledButton{
 
         exec = () -> {
             PruneThePool.pruneBtn.useCharge();
-            removeCardFromPools(pointer());
+            PruneThePool.pruneBtn.pruneCard(pointer().cardID);
 
             AbstractDungeon.topLevelEffects.add(new BetterSmokeBombEffect(pointer().hb.cX, pointer().hb.cY));
 
@@ -59,19 +59,5 @@ public class PruneButton extends LabledButton{
 
     private AbstractCard pointer() {
         return AbstractDungeon.cardRewardScreen.rewardGroup.get(slot);
-    }
-
-    private void removeCardFromPools(AbstractCard c) {
-        AbstractDungeon.srcColorlessCardPool.removeCard(c.cardID);
-        AbstractDungeon.srcCommonCardPool.removeCard(c.cardID);
-        AbstractDungeon.srcUncommonCardPool.removeCard(c.cardID);
-        AbstractDungeon.srcRareCardPool.removeCard(c.cardID);
-
-        AbstractDungeon.colorlessCardPool.removeCard(c.cardID);
-        AbstractDungeon.commonCardPool.removeCard(c.cardID);
-        AbstractDungeon.uncommonCardPool.removeCard(c.cardID);
-        AbstractDungeon.rareCardPool.removeCard(c.cardID);
-
-        PruneThePool.pruneBtn.addPrunedCard(c.cardID);
     }
 }

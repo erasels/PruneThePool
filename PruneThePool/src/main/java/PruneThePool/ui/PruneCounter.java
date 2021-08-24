@@ -115,6 +115,27 @@ public class PruneCounter extends TopPanelItem {
         charges = amt;
     }
 
+    public void pruneCard(String s, boolean addToPruneList) {
+        AbstractDungeon.colorlessCardPool.removeCard(s);
+        AbstractDungeon.commonCardPool.removeCard(s);
+        AbstractDungeon.uncommonCardPool.removeCard(s);
+        AbstractDungeon.rareCardPool.removeCard(s);
+
+        if(PruneThePool.shouldCR()) {
+            AbstractDungeon.srcColorlessCardPool.removeCard(s);
+            AbstractDungeon.srcCommonCardPool.removeCard(s);
+            AbstractDungeon.srcUncommonCardPool.removeCard(s);
+            AbstractDungeon.srcRareCardPool.removeCard(s);
+        }
+
+        if(addToPruneList)
+            addPrunedCard(s);
+    }
+
+    public void pruneCard(String s) {
+        pruneCard(s, true);
+    }
+
     public void addPrunedCard(String ID) {
         prunedCards.add(ID);
     }

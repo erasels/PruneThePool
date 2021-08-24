@@ -38,18 +38,18 @@ public class PruneThePool implements
 
         try {
             Properties defaults = new Properties();
-            defaults.put("SkipLogging", Boolean.toString(true));
+            defaults.put("CompleteRemoval", Boolean.toString(false));
             modConfig = new SpireConfig("PruneThePool", "Config", defaults);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean shouldSL() {
+    public static boolean shouldCR() {
         if (modConfig == null) {
             return false;
         }
-        return modConfig.getBool("SkipLogging");
+        return modConfig.getBool("CompleteRemoval");
     }
 
     @Override
@@ -58,12 +58,12 @@ public class PruneThePool implements
 
         UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(makeID("Config"));
 
-        ModLabeledToggleButton HHBtn = new ModLabeledToggleButton("Skip all non-essential logging", 350, 700, Settings.CREAM_COLOR, FontHelper.charDescFont, shouldSL(), settingsPanel, l -> {
+        ModLabeledToggleButton CRBtn = new ModLabeledToggleButton(uiStrings.TEXT_DICT.get("CR"), 350, 700, Settings.CREAM_COLOR, FontHelper.charDescFont, shouldCR(), settingsPanel, l -> {
         },
                 button ->
                 {
                     if (modConfig != null) {
-                        modConfig.setBool("SkipLogging", button.enabled);
+                        modConfig.setBool("CompleteRemoval", button.enabled);
                         try {
                             modConfig.save();
                         } catch (IOException e) {
@@ -71,7 +71,7 @@ public class PruneThePool implements
                         }
                     }
                 });
-        settingsPanel.addUIElement(HHBtn);
+        settingsPanel.addUIElement(CRBtn);
 
         BaseMod.registerModBadge(ImageMaster.loadImage("pruneThePoolResources/img/modBadge.png"), "PruneThePool", "erasels", "TODO", settingsPanel);
 

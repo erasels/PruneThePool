@@ -1,5 +1,6 @@
 package PruneThePool.patches;
 
+import PruneThePool.PruneThePool;
 import PruneThePool.ui.PruneButton;
 import PruneThePool.ui.PruneCounter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -56,15 +57,7 @@ public class CardRewardScreenPatches {
         @SpirePostfixPatch
         public static void patch() {
             for(String s : PruneCounter.prunedCards) {
-                AbstractDungeon.srcColorlessCardPool.removeCard(s);
-                AbstractDungeon.srcCommonCardPool.removeCard(s);
-                AbstractDungeon.srcUncommonCardPool.removeCard(s);
-                AbstractDungeon.srcRareCardPool.removeCard(s);
-
-                AbstractDungeon.colorlessCardPool.removeCard(s);
-                AbstractDungeon.commonCardPool.removeCard(s);
-                AbstractDungeon.uncommonCardPool.removeCard(s);
-                AbstractDungeon.rareCardPool.removeCard(s);
+                PruneThePool.pruneBtn.pruneCard(s, false);
             }
         }
     }

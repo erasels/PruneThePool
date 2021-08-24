@@ -1,7 +1,7 @@
 {
   "${ModID}:Config": {
     "TEXT_DICT": {
-      "AlwaysChallenge": "Challenges spawn every combat.",
+      "CR": "Complete remove repalced cards. (can't spawn from transforming cards or random card generation)",
       "GiveCard": "Spawn standard card reward when challenges spawn.",
       "PlayerTips": "Show Opt-In Challenge descriptions when hovering the player."
     }
