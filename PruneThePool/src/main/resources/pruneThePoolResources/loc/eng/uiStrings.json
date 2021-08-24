@@ -12,6 +12,12 @@
       "Remove this card from this and future card rewards and replace it with a different one."
     ]
   },
+  "${ModID}:PushButton": {
+  "TEXT": [
+    "Push",
+    "Replace this card with a different one. Non-current-class cards cannot be removed from future card rewards."
+  ]
+},
   "${ModID}:PruneCounter": {
     "TEXT": [
       "Replace Charges",
