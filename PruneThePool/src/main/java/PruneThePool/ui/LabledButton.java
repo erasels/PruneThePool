@@ -1,14 +1,16 @@
 package PruneThePool.ui;
 
+import PruneThePool.PruneThePool;
+import PruneThePool.util.TextureLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.Hitbox;
-import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.helpers.controller.CInputActionSet;
 import com.megacrit.cardcrawl.helpers.input.InputActionSet;
@@ -35,6 +37,8 @@ public class LabledButton {
     private static final float HITBOX_W = 260.0F * Settings.scale;
     private static final float HITBOX_H = 80.0F * Settings.scale;
     public Hitbox hb = new Hitbox(0.0F, 0.0F, HITBOX_W, HITBOX_H);
+
+    protected static final Texture tex = TextureLoader.getTexture(PruneThePool.makeUIPath("pruneButton.png"));
 
     //x, y, text, cancel, exec
     public LabledButton(float x, float y, String msg, boolean toCancel, Runnable exec, Color col, Color highlight) {
@@ -124,11 +128,11 @@ public class LabledButton {
 
     private void renderButton(SpriteBatch sb) {
         sb.setColor(this.btnColor);
-        sb.draw(ImageMaster.REWARD_SCREEN_TAKE_BUTTON, this.current_x - H, current_y - 128.0F, H, 128.0F, W, H, Settings.scale, Settings.scale, 0.0F, 0, 0, W, H, false, false);
+        sb.draw(tex, this.current_x - H, current_y - 128.0F, H, 128.0F, W, H, Settings.scale, Settings.scale, 0.0F, 0, 0, W, H, false, false);
         if (this.hb.hovered && !this.hb.clickStarted) {
             //sb.setBlendFunction(Gdx.gl20.GL_SRC_ALPHA, Gdx.gl20.GL_DST_COLOR);
             sb.setColor(highColor);
-            sb.draw(ImageMaster.REWARD_SCREEN_TAKE_BUTTON, this.current_x - H, current_y - 128.0F, H, 128.0F, W, H, Settings.scale, Settings.scale, 0.0F, 0, 0, W, H, false, false);
+            sb.draw(tex, this.current_x - H, current_y - 128.0F, H, 128.0F, W, H, Settings.scale, Settings.scale, 0.0F, 0, 0, W, H, false, false);
             //sb.setBlendFunction(Gdx.gl20.GL_SRC_ALPHA, Gdx.gl20.GL_ONE_MINUS_SRC_ALPHA);
             sb.setColor(Color.WHITE);
 
