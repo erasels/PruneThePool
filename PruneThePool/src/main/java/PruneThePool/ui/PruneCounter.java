@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 public class PruneCounter extends TopPanelItem {
     public static final int START_CHARGES = 5;
+    public static final int ELITE_CHARGES = 1;
+    public static final int BOSS_CHARGES = 3;
     private static final float FLASH_ANIM_TIME = 2.0F;
     private static final float tipYpos = Settings.HEIGHT - (120.0f * Settings.scale);
     public float flashTimer;

@@ -112,10 +112,10 @@ public class PruneThePool implements
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom) {
         if(abstractRoom instanceof MonsterRoomElite) {
-            pruneBtn.gainCharge(2);
+            pruneBtn.gainCharge(PruneCounter.ELITE_CHARGES);
         }
         if(abstractRoom instanceof MonsterRoomBoss) {
-            pruneBtn.gainCharge(3);
+            pruneBtn.gainCharge(PruneCounter.BOSS_CHARGES);
         }
     }
 
