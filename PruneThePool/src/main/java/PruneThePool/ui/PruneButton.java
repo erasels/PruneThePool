@@ -15,7 +15,7 @@ import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.localization.UIStrings;
 
 public class PruneButton extends LabledButton{
-    private static UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(PruneThePool.makeID("PruneButton"));
+    protected static UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(PruneThePool.makeID("PruneButton"));
     public int slot;
 
     public PruneButton(int slot) {

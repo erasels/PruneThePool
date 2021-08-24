@@ -1,8 +1,11 @@
 package PruneThePool.patches;
 
 import PruneThePool.PruneThePool;
+import PruneThePool.ui.LabledButton;
 import PruneThePool.ui.PruneButton;
 import PruneThePool.ui.PruneCounter;
+import PruneThePool.ui.PushButton;
+import PruneThePool.util.UC;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.evacipated.cardcrawl.modthespire.patcher.PatchingException;
@@ -14,16 +17,21 @@ import javassist.CtBehavior;
 import java.util.ArrayList;
 
 public class CardRewardScreenPatches {
-    public static ArrayList<PruneButton> buttons = new ArrayList<>();
+    public static ArrayList<LabledButton> buttons = new ArrayList<>();
 
     @SpirePatch2(clz = CardRewardScreen.class, method = "open")
     public static class GenerateButtons {
         @SpirePostfixPatch
         public static void patch(CardRewardScreen __instance) {
+            LabledButton btn;
             for(int i = 0; i < __instance.rewardGroup.size(); i++) {
-                PruneButton bt = new PruneButton(i);
-                buttons.add(bt);
-                bt.show();
+                if(__instance.rewardGroup.get(i).color == UC.p().getCardColor()) {
+                    btn = new PruneButton(i);
+                } else {
+                    btn = new PushButton(i);
+                }
+                buttons.add(btn);
+                btn.show();
             }
         }
     }
@@ -48,7 +56,7 @@ public class CardRewardScreenPatches {
     public static class UpdateButtons {
         @SpirePostfixPatch
         public static void patch() {
-            buttons.forEach(PruneButton::update);
+            buttons.forEach(LabledButton::update);
         }
     }
 
