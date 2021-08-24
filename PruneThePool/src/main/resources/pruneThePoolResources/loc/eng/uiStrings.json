@@ -1,7 +1,7 @@
 {
   "${ModID}:Config": {
     "TEXT_DICT": {
-      "CR": "Complete remove repalced cards. (can't spawn from transforming cards or random card generation)"
+      "CR": "Complete remove replaced cards. (can't spawn from transforming cards or random card generation)"
     }
   },
   "${ModID}:PruneButton": {

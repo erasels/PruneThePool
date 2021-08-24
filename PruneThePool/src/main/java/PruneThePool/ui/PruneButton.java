@@ -14,23 +14,29 @@ import com.megacrit.cardcrawl.helpers.TipHelper;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.localization.UIStrings;
 
+import java.util.ArrayList;
+
 public class PruneButton extends LabledButton{
     protected static UIStrings pruneStrings = CardCrawlGame.languagePack.getUIString(PruneThePool.makeID("PruneButton"));
     protected static UIStrings pushStrings = CardCrawlGame.languagePack.getUIString(PruneThePool.makeID("PushButton"));
     public int slot;
+    public boolean isPrune;
+
+    private String lastCardID;
 
     public PruneButton(int slot) {
         super(0, 0, pruneStrings.TEXT[0], false, () -> {}, Color.LIGHT_GRAY, Color.WHITE);
         this.slot = slot;
 
-        updateName();
+        lastCardID = pointer().cardID;
+        updateStatus();
 
         x = current_x = target_x = pointer().current_x;
         y = current_y = target_y = pointer().target_y + (AbstractCard.RAW_H/2f * Settings.scale);
 
         exec = () -> {
             PruneThePool.pruneBtn.useCharge();
-            if(isPrune()){
+            if(isPrune){
                 PruneThePool.pruneBtn.pruneCard(pointer().cardID);
             }
 
@@ -41,18 +47,23 @@ public class PruneButton extends LabledButton{
             UC.copyCardPosition(pointer(), newCard);
             AbstractDungeon.cardRewardScreen.rewardGroup.set(slot, newCard);
 
-            updateName();
+            updateStatus();
         };
     }
 
     @Override
     public void update() {
         if(PruneCounter.charges > 0) {
+            AbstractCard c = pointer();
+            if(!lastCardID.equals(c.cardID)) {
+                updateStatus();
+            }
+
             if(isHidden) {
                 show();
             }
-            x = target_x = pointer().current_x;
-            y = target_y = pointer().target_y + pointer().hb.height / 2f + hb.height / 2f;
+            x = target_x = c.current_x;
+            y = target_y = c.target_y + c.hb.height / 2f + hb.height / 2f;
             super.update();
         } else {
             hide();
@@ -62,7 +73,7 @@ public class PruneButton extends LabledButton{
     @Override
     protected void onHoverRender(SpriteBatch sb) {
         String header, body;
-        if(isPrune()) {
+        if(isPrune) {
             header = pruneStrings.TEXT[0];
             body = pruneStrings.TEXT[1];
         } else {
@@ -72,8 +83,22 @@ public class PruneButton extends LabledButton{
         TipHelper.renderGenericTip(InputHelper.mX + 50f * Settings.scale, InputHelper.mY, header, body);
     }
 
+    private void updateStatus() {
+        ArrayList<String> poolCards = new ArrayList<>();
+        AbstractDungeon.commonCardPool.group.forEach(c -> poolCards.add(c.cardID));
+        AbstractDungeon.uncommonCardPool.group.forEach(c -> poolCards.add(c.cardID));
+        AbstractDungeon.rareCardPool.group.forEach(c -> poolCards.add(c.cardID));
+        if(poolCards.contains(pointer().cardID)) {
+            isPrune = true;
+        } else {
+            isPrune = false;
+        }
+
+        updateName();
+    }
+
     private void updateName() {
-        if(isPrune()) {
+        if(isPrune) {
             msg = pruneStrings.TEXT[0];
         } else {
             msg = pushStrings.TEXT[0];
@@ -82,9 +107,5 @@ public class PruneButton extends LabledButton{
 
     private AbstractCard pointer() {
         return AbstractDungeon.cardRewardScreen.rewardGroup.get(slot);
-    }
-
-    private boolean isPrune() {
-        return pointer().color == UC.p().getCardColor();
     }
 }
