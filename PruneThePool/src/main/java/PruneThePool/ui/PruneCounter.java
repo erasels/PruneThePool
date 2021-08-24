@@ -116,13 +116,11 @@ public class PruneCounter extends TopPanelItem {
     }
 
     public void pruneCard(String s, boolean addToPruneList) {
-        AbstractDungeon.colorlessCardPool.removeCard(s);
         AbstractDungeon.commonCardPool.removeCard(s);
         AbstractDungeon.uncommonCardPool.removeCard(s);
         AbstractDungeon.rareCardPool.removeCard(s);
 
         if(PruneThePool.shouldCR()) {
-            AbstractDungeon.srcColorlessCardPool.removeCard(s);
             AbstractDungeon.srcCommonCardPool.removeCard(s);
             AbstractDungeon.srcUncommonCardPool.removeCard(s);
             AbstractDungeon.srcRareCardPool.removeCard(s);
