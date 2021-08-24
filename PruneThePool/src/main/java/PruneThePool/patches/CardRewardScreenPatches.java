@@ -4,8 +4,6 @@ import PruneThePool.PruneThePool;
 import PruneThePool.ui.LabledButton;
 import PruneThePool.ui.PruneButton;
 import PruneThePool.ui.PruneCounter;
-import PruneThePool.ui.PushButton;
-import PruneThePool.util.UC;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.evacipated.cardcrawl.modthespire.patcher.PatchingException;
@@ -25,11 +23,7 @@ public class CardRewardScreenPatches {
         public static void patch(CardRewardScreen __instance) {
             LabledButton btn;
             for(int i = 0; i < __instance.rewardGroup.size(); i++) {
-                if(__instance.rewardGroup.get(i).color == UC.p().getCardColor()) {
-                    btn = new PruneButton(i);
-                } else {
-                    btn = new PushButton(i);
-                }
+                btn = new PruneButton(i);
                 buttons.add(btn);
                 btn.show();
             }

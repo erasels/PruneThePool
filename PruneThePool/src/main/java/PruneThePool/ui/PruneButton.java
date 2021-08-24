@@ -15,19 +15,24 @@ import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.localization.UIStrings;
 
 public class PruneButton extends LabledButton{
-    protected static UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(PruneThePool.makeID("PruneButton"));
+    protected static UIStrings pruneStrings = CardCrawlGame.languagePack.getUIString(PruneThePool.makeID("PruneButton"));
+    protected static UIStrings pushStrings = CardCrawlGame.languagePack.getUIString(PruneThePool.makeID("PushButton"));
     public int slot;
 
     public PruneButton(int slot) {
-        super(0, 0, uiStrings.TEXT[0], false, () -> {}, Color.LIGHT_GRAY, Color.WHITE);
+        super(0, 0, pruneStrings.TEXT[0], false, () -> {}, Color.LIGHT_GRAY, Color.WHITE);
         this.slot = slot;
+
+        updateName();
 
         x = current_x = target_x = pointer().current_x;
         y = current_y = target_y = pointer().target_y + (AbstractCard.RAW_H/2f * Settings.scale);
 
         exec = () -> {
             PruneThePool.pruneBtn.useCharge();
-            PruneThePool.pruneBtn.pruneCard(pointer().cardID);
+            if(isPrune()){
+                PruneThePool.pruneBtn.pruneCard(pointer().cardID);
+            }
 
             AbstractDungeon.topLevelEffects.add(new BetterSmokeBombEffect(pointer().hb.cX, pointer().hb.cY));
 
@@ -35,6 +40,8 @@ public class PruneButton extends LabledButton{
             AbstractCard newCard = AbstractDungeon.getRewardCards().get(0);
             UC.copyCardPosition(pointer(), newCard);
             AbstractDungeon.cardRewardScreen.rewardGroup.set(slot, newCard);
+
+            updateName();
         };
     }
 
@@ -54,10 +61,30 @@ public class PruneButton extends LabledButton{
 
     @Override
     protected void onHoverRender(SpriteBatch sb) {
-        TipHelper.renderGenericTip(InputHelper.mX + 50f * Settings.scale, InputHelper.mY, uiStrings.TEXT[0], uiStrings.TEXT[1]);
+        String header, body;
+        if(isPrune()) {
+            header = pruneStrings.TEXT[0];
+            body = pruneStrings.TEXT[1];
+        } else {
+            header = pushStrings.TEXT[0];
+            body = pushStrings.TEXT[1];
+        }
+        TipHelper.renderGenericTip(InputHelper.mX + 50f * Settings.scale, InputHelper.mY, header, body);
+    }
+
+    private void updateName() {
+        if(isPrune()) {
+            msg = pruneStrings.TEXT[0];
+        } else {
+            msg = pushStrings.TEXT[0];
+        }
     }
 
     private AbstractCard pointer() {
         return AbstractDungeon.cardRewardScreen.rewardGroup.get(slot);
+    }
+
+    private boolean isPrune() {
+        return pointer().color == UC.p().getCardColor();
     }
 }

@@ -1,9 +1,7 @@
 {
   "${ModID}:Config": {
     "TEXT_DICT": {
-      "CR": "Complete remove repalced cards. (can't spawn from transforming cards or random card generation)",
-      "GiveCard": "Spawn standard card reward when challenges spawn.",
-      "PlayerTips": "Show Opt-In Challenge descriptions when hovering the player."
+      "CR": "Complete remove repalced cards. (can't spawn from transforming cards or random card generation)"
     }
   },
   "${ModID}:PruneButton": {
@@ -15,7 +13,7 @@
   "${ModID}:PushButton": {
   "TEXT": [
     "Push",
-    "Replace this card with a different one. Non-current-class cards cannot be removed from future card rewards."
+    "Replace this card with a different one. NL Cards from a different class cannot be removed from future card rewards."
   ]
 },
   "${ModID}:PruneCounter": {
