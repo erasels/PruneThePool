@@ -1,11 +1,13 @@
 package PruneThePool;
 
 import PruneThePool.ui.PruneCounter;
-import basemod.BaseMod;
-import basemod.ModLabeledToggleButton;
-import basemod.ModPanel;
+import basemod.*;
 import basemod.abstracts.CustomSavable;
-import basemod.interfaces.*;
+import basemod.interfaces.EditStringsSubscriber;
+import basemod.interfaces.PostBattleSubscriber;
+import basemod.interfaces.PostInitializeSubscriber;
+import basemod.interfaces.StartGameSubscriber;
+import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -39,6 +41,9 @@ public class PruneThePool implements
         try {
             Properties defaults = new Properties();
             defaults.put("CompleteRemoval", Boolean.toString(false));
+            defaults.put("StartingCharges", Integer.toString(5));
+            defaults.put("EliteCharges", Integer.toString(1));
+            defaults.put("BossCharges", Integer.toString(3));
             modConfig = new SpireConfig("PruneThePool", "Config", defaults);
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,13 +57,35 @@ public class PruneThePool implements
         return modConfig.getBool("CompleteRemoval");
     }
 
+    public static int getSC() {
+        if (modConfig == null) {
+            return -1;
+        }
+        return modConfig.getInt("StartingCharges");
+    }
+
+    public static int getEC() {
+        if (modConfig == null) {
+            return -1;
+        }
+        return modConfig.getInt("EliteCharges");
+    }
+
+    public static int getBC() {
+        if (modConfig == null) {
+            return -1;
+        }
+        return modConfig.getInt("BossCharges");
+    }
+
+    private int yPos = 700;
+    private ModPanel settingsPanel = new ModPanel();
     @Override
     public void receivePostInitialize() {
-        ModPanel settingsPanel = new ModPanel();
-
         UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(makeID("Config"));
 
-        ModLabeledToggleButton CRBtn = new ModLabeledToggleButton(uiStrings.TEXT_DICT.get("CR"), 350, 700, Settings.CREAM_COLOR, FontHelper.charDescFont, shouldCR(), settingsPanel, l -> {
+        int xPos = 350;
+        ModLabeledToggleButton CRBtn = new ModLabeledToggleButton(uiStrings.TEXT_DICT.get("CR"), xPos, yPos, Settings.CREAM_COLOR, FontHelper.charDescFont, shouldCR(), settingsPanel, l -> {
         },
                 button ->
                 {
@@ -71,7 +98,41 @@ public class PruneThePool implements
                         }
                     }
                 });
-        settingsPanel.addUIElement(CRBtn);
+        registerUIElement(CRBtn, true);
+
+        ModLabel SCSliderLabel = new ModLabel(uiStrings.TEXT_DICT.get("StartingCharge"), xPos + 40, yPos + 8, Settings.CREAM_COLOR, FontHelper.charDescFont, settingsPanel, l -> { });
+        registerUIElement(SCSliderLabel, false);
+        float textWidth = FontHelper.getWidth(FontHelper.charDescFont, uiStrings.TEXT_DICT.get("EliteCharge"), 1f / Settings.scale);
+
+        ModMinMaxSlider SCSlider = new ModMinMaxSlider("", xPos + 100 + textWidth, yPos + 15, 0, 25, getSC(), "x%2.0f", settingsPanel, slider -> {
+            if (modConfig != null) {
+                modConfig.setInt("StartingCharges", MathUtils.round(slider.getValue()));
+                saveConfig();
+            }
+        });
+        registerUIElement(SCSlider, true);
+
+        ModLabel ECSliderLabel = new ModLabel(uiStrings.TEXT_DICT.get("EliteCharge"), xPos + 40, yPos + 8, Settings.CREAM_COLOR, FontHelper.charDescFont, settingsPanel, l -> { });
+        registerUIElement(ECSliderLabel, false);
+
+        ModMinMaxSlider ECSlider = new ModMinMaxSlider("", xPos + 100 + textWidth, yPos + 15, 0, 10, getEC(), "x%2.0f", settingsPanel, slider -> {
+            if (modConfig != null) {
+                modConfig.setInt("EliteCharges", MathUtils.round(slider.getValue()));
+                saveConfig();
+            }
+        });
+        registerUIElement(ECSlider, true);
+
+        ModLabel BCSliderLabel = new ModLabel(uiStrings.TEXT_DICT.get("BossCharge"), xPos + 40, yPos + 8, Settings.CREAM_COLOR, FontHelper.charDescFont, settingsPanel, l -> { });
+        registerUIElement(BCSliderLabel, false);
+
+        ModMinMaxSlider BCSlider = new ModMinMaxSlider("", xPos + 100 + textWidth, yPos + 15, 0, 10, getBC(), "x%2.0f", settingsPanel, slider -> {
+            if (modConfig != null) {
+                modConfig.setInt("BossCharges", MathUtils.round(slider.getValue()));
+                saveConfig();
+            }
+        });
+        registerUIElement(BCSlider, true);
 
         BaseMod.registerModBadge(ImageMaster.loadImage("pruneThePoolResources/img/modBadge.png"), "PruneThePool", "erasels", "TODO", settingsPanel);
 
@@ -109,6 +170,14 @@ public class PruneThePool implements
         });
     }
 
+    private void registerUIElement(IUIElement elem, boolean decrement) {
+        settingsPanel.addUIElement(elem);
+
+        if (decrement) {
+            yPos -= 50;
+        }
+    }
+
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom) {
         if(abstractRoom instanceof MonsterRoomElite) {
@@ -126,6 +195,10 @@ public class PruneThePool implements
 
     @Override
     public void receiveStartGame() {
+        PruneCounter.START_CHARGES = getSC();
+        PruneCounter.ELITE_CHARGES = getEC();
+        PruneCounter.BOSS_CHARGES = getBC();
+
         if(!CardCrawlGame.loadingSave) {
             pruneBtn.setCharge(PruneCounter.START_CHARGES);
             PruneCounter.prunedCards.clear();
@@ -146,5 +219,13 @@ public class PruneThePool implements
 
     public static String makeID(String input) {
         return getModID() + ":" + input;
+    }
+
+    private void saveConfig() {
+        try {
+            modConfig.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

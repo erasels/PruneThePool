@@ -1,7 +1,10 @@
 {
   "${ModID}:Config": {
     "TEXT_DICT": {
-      "CR": "Complete remove replaced cards. (can't spawn from transforming cards or random card generation)"
+      "CR": "Completely remove replaced cards. (Can't spawn from random card generation, etc)",
+      "StartingCharge": "Starting charges:",
+      "EliteCharge": "Slain elite charges:",
+      "BossCharge": "Slain boss charges:"
     }
   },
   "${ModID}:PruneButton": {
