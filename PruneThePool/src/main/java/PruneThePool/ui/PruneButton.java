@@ -1,6 +1,7 @@
 package PruneThePool.ui;
 
 import PruneThePool.PruneThePool;
+import PruneThePool.patches.ButtonPatches;
 import PruneThePool.patches.CardRerollPatches;
 import PruneThePool.util.UC;
 import PruneThePool.vfx.BetterSmokeBombEffect;
@@ -17,6 +18,7 @@ import com.megacrit.cardcrawl.localization.UIStrings;
 import java.util.ArrayList;
 
 public class PruneButton extends LabledButton {
+    private static final float ANIMATOR_Y_OFFSET = LabledButton.HITBOX_H;
     protected static UIStrings pruneStrings = CardCrawlGame.languagePack.getUIString(PruneThePool.makeID("PruneButton"));
     protected static UIStrings pushStrings = CardCrawlGame.languagePack.getUIString(PruneThePool.makeID("PushButton"));
     public int slot;
@@ -34,6 +36,10 @@ public class PruneButton extends LabledButton {
 
         x = current_x = target_x = pointer().current_x;
         y = current_y = target_y = pointer().target_y + (AbstractCard.RAW_H / 2f * Settings.scale);
+
+        if(ButtonPatches.animatorWorkaround) {
+            y = current_y = target_y = target_y + ANIMATOR_Y_OFFSET;
+        }
 
         exec = () -> {
             PruneThePool.pruneBtn.useCharge();
@@ -70,6 +76,10 @@ public class PruneButton extends LabledButton {
             }
             x = target_x = c.current_x;
             y = target_y = c.target_y + c.hb.height / 2f + hb.height / 2f;
+
+            if(ButtonPatches.animatorWorkaround) {
+                y= target_y += ANIMATOR_Y_OFFSET;
+            }
             super.update();
         } else {
             hide();

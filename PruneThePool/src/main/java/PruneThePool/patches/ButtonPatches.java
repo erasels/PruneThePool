@@ -4,6 +4,7 @@ import PruneThePool.PruneThePool;
 import PruneThePool.ui.LabledButton;
 import PruneThePool.ui.PruneButton;
 import PruneThePool.ui.PruneCounter;
+import PruneThePool.util.UC;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 public class ButtonPatches {
     public static ArrayList<LabledButton> buttons = new ArrayList<>();
+    public static boolean animatorWorkaround;
 
     //Add buttons to cards in card reward
     @SpirePatch2(clz = CardRewardScreen.class, method = "open")
@@ -21,10 +23,16 @@ public class ButtonPatches {
         @SpirePostfixPatch
         public static void patch(CardRewardScreen __instance) {
             LabledButton btn;
+            animatorWorkaround = UC.p().hasRelic("animator:PurgingStone");
+
             for(int i = 0; i < __instance.rewardGroup.size(); i++) {
                 btn = new PruneButton(i);
                 buttons.add(btn);
                 btn.show();
+            }
+
+            if(animatorWorkaround) {
+                AbstractDungeon.dynamicBanner.targetY += buttons.get(0).hb.height;
             }
         }
     }
@@ -34,7 +42,11 @@ public class ButtonPatches {
     public static class YeetButtons {
         @SpirePostfixPatch
         public static void patch() {
+            if(animatorWorkaround) {
+                AbstractDungeon.dynamicBanner.targetY -= buttons.get(0).hb.height;
+            }
             buttons.clear();
+            animatorWorkaround = false;
         }
     }
 

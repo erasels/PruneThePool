@@ -34,8 +34,8 @@ public class LabledButton {
     private Color btnColor, highColor;
     private float duration = 0;
     public boolean screenDisabled = false;
-    private static final float HITBOX_W = 260.0F * Settings.scale;
-    private static final float HITBOX_H = 80.0F * Settings.scale;
+    protected static final float HITBOX_W = 260.0F * Settings.scale;
+    protected static final float HITBOX_H = 80.0F * Settings.scale;
     public Hitbox hb = new Hitbox(0.0F, 0.0F, HITBOX_W, HITBOX_H);
 
     protected static final Texture tex = TextureLoader.getTexture(PruneThePool.makeUIPath("pruneButton.png"));
