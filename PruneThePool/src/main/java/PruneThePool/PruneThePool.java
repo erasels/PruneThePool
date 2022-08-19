@@ -210,6 +210,9 @@ public class PruneThePool implements
     }
 
     private String locPath() {
+        if(Settings.language == Settings.GameLanguage.RUS) {
+            return "rus";
+        }
         return "eng";
     }
 
