@@ -1,0 +1,32 @@
+{
+  "pruneThePool:Config": {
+    "TEXT_DICT": {
+      "CR": "完全移除之前的卡牌（不会再随机出现）",
+      "StartingCharge": "初始换牌次数：",
+      "EliteCharge": "杀精英可获得的换牌次数：",
+      "BossCharge": "杀Boss可获得的换牌次数："
+    }
+  },
+  "pruneThePool:PruneButton": {
+    "TEXT": [
+      "替换",
+      "替换一张不同的卡牌，并将被换掉的卡牌从卡池奖励中移除"
+    ]
+  },
+  "pruneThePool:PushButton": {
+  "TEXT": [
+    "推走",
+    "换为一张完全不同的卡牌 NL 不同职业的卡牌不能从卡牌奖励中移除"
+  ]
+},
+  "pruneThePool:PruneCounter": {
+    "TEXT": [
+      "换牌次数",
+      "每换一次牌，次数减少1，减至0后便不能换牌 NL 击杀精英与BOSS能获得更多换牌次数！ NL 战斗结束才能查看曾经移除的卡牌"
+    ],
+    "TEXT_DICT": {
+      "PruneScreen": "这些牌已经从卡池中移除了",
+      "cancel": "返回"
+    }
+  }
+}
