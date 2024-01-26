@@ -6,7 +6,7 @@
     <groupId>UpdateBodyText</groupId>
     <artifactId>PruneThePool</artifactId>
     <name>Prune The Pool</name>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>Allows the player to prune the card pool by removing cards from card rewards and replacing them, barring them from spawning again that run.</description>
 
     <properties>
@@ -16,7 +16,7 @@
         <ModTheSpire.version>3.8.0</ModTheSpire.version>
         <ModID>pruneThePool</ModID>
         <!--CHANGE THIS TO YOUR STEAM INSTALLATION-->
-        <Steam.path>K:/Steam/steamapps</Steam.path>
+        <Steam.path>E:/SteamLibrary/steamapps</Steam.path>
     </properties>
 
     <dependencies>
